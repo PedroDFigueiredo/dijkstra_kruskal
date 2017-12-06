@@ -17,18 +17,24 @@ directed = False
 # if len(sys.argv) >= 3:
 # 	directed = True if sys.argv[2] == "d" else False
 
-graph = Graph.Graph(True)
-
+G = Graph.Graph(True)
 
 
 a = time.time()
-graph.buildGraphFromFile(filepath)
+G.buildGraphFromFile(filepath)
 b = time.time()
+S = G.nodes
 
-# for w in S:
-# 	print(w)
-# 	print(S[w])
-print(graph.G)
-print("build time: %f "%(b-a))
-k = 10
-p = 0.05
+
+for w in S:
+	print(w)
+	print(S[w])
+
+print("\n::::::::::::::\n")
+path = G.Dijkstra("A")
+
+print(path[0])
+print(path[1])
+
+print("\nbuild time: %f "%(b-a))
+

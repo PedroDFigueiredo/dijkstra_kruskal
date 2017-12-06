@@ -4,8 +4,8 @@ s t 10
 y z 2
 y x 9
 y t 3
-z t 3
-t z 2
-t x 1
-t z 7
+z s 7
 z x 6
+x z 4
+t x 1
+t y 2
