@@ -12,29 +12,33 @@ import Graph
 
 filepath = sys.argv[1]
 
-directed = False
 
 # if len(sys.argv) >= 3:
 # 	directed = True if sys.argv[2] == "d" else False
+print(filepath)
 
-G = Graph.Graph(True)
+G = Graph.Graph()
 
 
-a = time.time()
 G.buildGraphFromFile(filepath)
-b = time.time()
+
 S = G.nodes
 
+print("\n::::::::::::::\n")
 
-for w in S:
-	print(w)
-	print(S[w])
+
+print(S)
+
+# for w in S:
+# 	print(w)
+# 	print(S[w])
 
 print("\n::::::::::::::\n")
-path = G.Dijkstra("A")
 
-print(path[0])
-print(path[1])
+# path = G.Dijkstra("A")
 
-print("\nbuild time: %f "%(b-a))
+# print(path[0])
+# print(path[1])
+
+print(G.Kruskal())
 

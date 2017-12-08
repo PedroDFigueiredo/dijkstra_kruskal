@@ -1,0 +1,14 @@
+b d 5
+a c 10
+a d 13
+a b 17
+c e 23
+c d 12
+d e 50
+d b 5
+c a 10
+d a 13
+b a 17
+e c 23
+d c 12
+e d 50

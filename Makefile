@@ -1,5 +1,5 @@
 GPP=python
-CFLAGS=exemplos/ex1.txt
+CFLAGS=exemplos/ex4.txt
 CFILES=main.py
 EXECUTABLE=main
 

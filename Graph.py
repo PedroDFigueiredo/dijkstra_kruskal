@@ -10,46 +10,28 @@ class Graph:
 	nodes = {}
 	d = {}   #distances
 	pred = {}
-	ant = {}
 	queue = set()
 	notVisited = {}
 	inf = 999999
 
 	def __init__(self, direct=True):
 		self.isDirected = direct
-		print("%s nodesraph Created!"%("Directed" if direct else "Undirected"))
+		print("%s graph Created!"%("Directed" if direct else "Undirected"))
 
-	def addNode(self, ori, dest, weight):
-
-		if ori not in self.nodes:
-			self.nodes.update({ori: {dest:weight}})
-		elif dest not in self.nodes[ori]:
-			self.nodes[ori].update({dest:weight})
-		else:
-			self.nodes[ori].update({dest:self.nodes[ori][dest] + 1})
-
-		if dest not in self.nodes:
-			self.nodes.update({dest: {}})
-
-		if ori not in self.queue:
-			self.queue.add(ori)
-
-		if dest not in self.queue:
-			self.queue.add(dest)
-
+	
 	
 	def weight(self, u, v):
 		return self.nodes[u][v]
 
 
 	def relax(self, u, v):
-		#print("relax:")
+		#print("\nrelax:")
+		#print(self.notVisited)
 		#print("%s->%d %d %s->%d "%(u,self.d[u], self.weight(u, v), v,self.d[v]))
 		if self.d[u] + self.weight(u, v) <  self.d[v]:
 			self.d.update({v:self.d[u] + self.weight(u, v)})
 			self.notVisited.update({v:self.d[v]})
 			self.pred.update({v:u})
-			self.ant.update({u:v})
 
 
 	def Dijkstra(self, startV):
@@ -72,33 +54,47 @@ class Graph:
 
 			del self.notVisited[v]
 
-		return self.d, self.createPath()
+		return self.d, self.createDijkPath()
 
 
 	def buildGraphFromFile(self, filepath):
 
 		file = open(filepath, "r")
 
-		n, m = file.readline().split("\n")[0].split(" ")
-
-		self.nEdges = m = int(m)
-		self.nVertices = n = int(n)
-		
-		for i in range(0, m):
-			line  = file.readline()
-			ori, dest, weight = line.split("\n")[0].split(" ")
-
-			ori = ori
-			dest = dest
-
-			self.addNode(ori, dest, int(weight))
+		for line in file.readlines():
+			aux = line.split(" ")
+			if len(aux) < 3:
+				self.addNode_(aux[0].replace("\n", ""))
+			else:
+				self.addNode(aux[0], aux[1], int(aux[2].replace("\n", ""))	)
 
 		file.close()
-
-	
+		
 		return self.nodes
 
-	def createPath(self):
+	def addNode_(self, ori):
+		if ori not in self.nodes:
+			self.nodes.update({ori: {}})
+
+	def addNode(self, ori, dest, weight):
+		print("%s %s %s"%(ori, dest, weight))
+		if ori not in self.nodes:
+			self.nodes.update({ori: {dest:weight}})
+		else:
+			self.nodes[ori].update({dest:weight})
+
+		if dest not in self.nodes:
+			self.nodes.update({dest:{}})
+
+		if ori not in self.queue:
+			self.queue.add(ori)
+
+		if dest not in self.queue:
+			self.queue.add(dest)
+
+		print(self.nodes)
+
+	def createDijkPath(self):
 
 		self.notVisited = dict(self.d)
 		temp = {}
@@ -123,3 +119,53 @@ class Graph:
 		
 		return aux
 
+	def Kruskal(self):
+		parent = dict()
+		rank = dict()
+		sortedEdges = list()
+		
+		def findSet(v):
+			if parent[v] != v:
+				parent[v] = findSet(parent[v])
+			return parent[v]
+
+		def union(u, v):
+			root1 = findSet(u)
+			root2 = findSet(v)
+			if root1 != root2:
+				if rank[root1] > rank[root2]:
+					parent[root2] = root1
+				else:
+					parent[root1] = root2
+			if rank[root1] == rank[root2]: 
+				rank[root2] += 1
+
+		
+		for v in self.nodes:
+			for u in self.nodes[v]:
+				sortedEdges.append((self.nodes[v][u], v, u))
+				rank[v] = 0
+			rank[u] = 0
+			parent[v] = v
+
+		sortedEdges.sort()
+		
+		print("edges")
+		print(sortedEdges)
+		print("\nparent ")
+		print(parent)
+		print("\nrank ")
+		print(rank)
+		print("\njoe1 ")
+		
+		self.mst = set()
+		for edge in sortedEdges:
+			w, u, v = edge
+			
+			if findSet(u) != findSet(v):
+				union(u, v)
+				self.mst.add(edge)
+		
+		return sorted(self.mst)
+
+		
