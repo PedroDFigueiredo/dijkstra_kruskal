@@ -12,6 +12,7 @@ import Graph
 
 filepath = sys.argv[1]
 
+alg = int(sys.argv[2])
 
 # if len(sys.argv) >= 3:
 # 	directed = True if sys.argv[2] == "d" else False
@@ -24,21 +25,24 @@ G.buildGraphFromFile(filepath)
 
 S = G.nodes
 
-print("\n::::::::::::::\n")
-
 
 print(S)
+
+print("\n::::::::::::::\n")
 
 # for w in S:
 # 	print(w)
 # 	print(S[w])
 
-print("\n::::::::::::::\n")
+if alg == 1:
+	path = G.Dijkstra("a")
+	print("Dijikstra")
+	
 
-# path = G.Dijkstra("A")
+	print(path[0])
+	print(path[1])
 
-# print(path[0])
-# print(path[1])
-
-print(G.Kruskal())
+else:
+	print("Kruskal")
+	print(G.Kruskal())
 
